@@ -7,8 +7,6 @@ class Block {
         this.data = data
         this.previousHash = previousHash
         this.hash = this.hashBlock()
-
-        //this.hashBlock = this.hashBlock.bind(this)
     }
     hashBlock(){
         const sha256 = CryptoJS.algo.SHA256.create()
