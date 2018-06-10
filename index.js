@@ -1,2 +1,3 @@
 require('babel-register')
-require('./gcoin')
+require('./gCoin')
+require('./server')
