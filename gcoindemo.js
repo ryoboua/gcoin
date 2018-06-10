@@ -1,5 +1,4 @@
-import CryptoJS from 'crypto-js'
-
+const CryptoJS = require('crypto-js')
 // Define what a gcoin block is
 class Block {
     constructor(index, timestamp, data, previousHash){
@@ -11,7 +10,6 @@ class Block {
 
         //this.hashBlock = this.hashBlock.bind(this)
     }
-
     hashBlock(){
         const sha256 = CryptoJS.algo.SHA256.create()
         .update(this.index.toString())
@@ -23,12 +21,10 @@ class Block {
         return hash.toString(CryptoJS.enc.Hex)
     }
 }
-
 const createGenesisBlock = () => {
     // constructing the first block
     return new Block(0, Date.now(), 'Genesis Block', '0' )
 }
-
 const nextBlock = lastBlock => {
     const index = lastBlock.index + 1
     const timestamp = Date.now()
@@ -37,8 +33,6 @@ const nextBlock = lastBlock => {
 
     return new Block(index, timestamp, data, previous_hash)
 }
-
-
 const BLOCKCHAIN = [createGenesisBlock()]
 let previousBlock = BLOCKCHAIN[0]
 
@@ -48,11 +42,5 @@ for (let i = 0; i < numberOfBlocksToAdd; i++){
     const blockToAdd = nextBlock(previousBlock)
     BLOCKCHAIN.push(blockToAdd)
     previousBlock = blockToAdd
-
-    // console.log(`Block #${i} has been added to the blockchain \n`)
-    // console.log(`Hash #${i} has been added to the blockchain \n`)
-
-
 }
-
 console.log('BLOCKCHAIN', BLOCKCHAIN)

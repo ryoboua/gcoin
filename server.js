@@ -1,21 +1,19 @@
 console.log({starting: true})
 
 import express from 'express'
-import gCoin, { BLOCKCHAIN, Block } from './gCoin'
+import { Block, createBlockChain } from './gCoin'
 const app = express()
-
-
 
 app.listen(3000, () => { console.log({ running: true })})
 
+const BLOCKCHAIN = createBlockChain()
 const minerAddress = 'q3nf394hjg-random-miner-address-34nf3i4nflkn3oi'
 
 const thisNodesTracsactions = []
 const peerNodes = []
 
-app.post('/', (req, res) => {
-    //would need to gran from, to and amount for request
-    //put mock data for now
+app.post('/transaction', (req, res) => {
+
     console.log('New transaction Submitted \n')
     console.log('From IP: 127.1.1 \n')
     console.log('To IP: 123.4.5 \n')
@@ -23,12 +21,10 @@ app.post('/', (req, res) => {
 
     res.send('Transaction submission successful\n')
 })
-
 app.get('/blocks', (req, res) => {
     res.send(consensus())
 
 })
-
 const proofOfWork = lastpow => {
     let incrementor = lastpow + 1
 
@@ -37,7 +33,6 @@ const proofOfWork = lastpow => {
     }
     return incrementor
 }
-
 const consensus = () => {
     let longestChain = BLOCKCHAIN
     const otherChains = findOtherChains()
@@ -51,12 +46,11 @@ const consensus = () => {
 const updateBlockChain = chain => chain.length <= BLOCKCHAIN.length ? BLOCKCHAIN : chain
 
 const findOtherChains = () => {
-    // the functions should return blockchain ledger of other peers
+    // this function should return blockchain ledger of other peers
     return [
         ['Genesis Block 0','Block 1','Block 2','Block 3','Block 4','Block 5'],
     ]
 }
-
 app.get('/mine', (req, res) => {
     const lastBlock = BLOCKCHAIN[BLOCKCHAIN.length -1]
     const lastPow = lastBlock.data.pow
@@ -85,8 +79,6 @@ app.get('/mine', (req, res) => {
         newBlockData,
         newBlockHash
     )
-
     BLOCKCHAIN.push(minedBlock)
     res.send(BLOCKCHAIN)
-
 })
